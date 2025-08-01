@@ -1,0 +1,6 @@
+[atlas]
+imagePath = sprites.png
+tileSize = 16
+
+[sprites]
+ball = 0, 0
