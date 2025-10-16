@@ -144,3 +144,40 @@ class RasterGameSprite extends PositionComponent with HasGameReference<MyGame> {
     );
   }
 }
+
+class GameSpriteAnimation extends GameSprite {
+  GameSpriteAnimation({
+    required this.spriteIds,
+    required this.interval,
+    super.angle,
+    super.anchor,
+    super.priority,
+    super.position,
+    super.children,
+    super.bleed,
+    this.removeOnFinish = false,
+  }) : super(spriteId: spriteIds.first);
+  final List<String> spriteIds;
+  final double interval;
+  int _idx = 0;
+  final bool removeOnFinish;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    add(
+      TimerComponent(
+        period: interval,
+        repeat: true,
+        onTick: () {
+          if (removeOnFinish && _idx == spriteIds.length - 1) {
+            removeFromParent();
+            return;
+          }
+          _idx = (_idx + 1) % spriteIds.length;
+          spriteId = spriteIds[_idx];
+        },
+      ),
+    );
+  }
+}
