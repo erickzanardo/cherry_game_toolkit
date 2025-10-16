@@ -25,7 +25,7 @@ enum GameControl {
 }
 
 class ControllerMappings {
-  static final defaultKeyboard = {
+  static final Map<GameControl, LogicalKeyboardKey> defaultKeyboard = {
     GameControl.moveLeft: LogicalKeyboardKey.keyA,
     GameControl.moveRight: LogicalKeyboardKey.keyD,
     GameControl.moveUp: LogicalKeyboardKey.keyW,

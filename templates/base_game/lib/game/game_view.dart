@@ -1,6 +1,6 @@
-import 'package:game/game/game.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:game/game/game.dart';
 
 class GameView extends StatefulWidget {
   const GameView({required this.gameAssets, super.key});

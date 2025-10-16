@@ -23,7 +23,7 @@ class FocusWidgetControllerAdapter<T> extends StatefulWidget {
 
 class _FocusWidgetControllerAdapterState<T>
     extends State<FocusWidgetControllerAdapter<T>> {
-  late final _node = widget.focusNode ?? FocusNode();
+  late final FocusNode _node = widget.focusNode ?? FocusNode();
 
   @override
   void initState() {
