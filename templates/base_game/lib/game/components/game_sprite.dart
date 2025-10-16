@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:game/game/game.dart';
 import 'package:flame/components.dart';
+import 'package:game/game/game.dart';
 
 mixin HasSprite on PositionComponent {
   String get spriteId;
@@ -85,7 +85,7 @@ class RasterGameSprite extends PositionComponent with HasGameReference<MyGame> {
   set spriteId(String value) {
     if (_spriteId != value) {
       _spriteId = value;
-      _setSprite();
+      unawaited(_setSprite());
     }
   }
 
@@ -104,10 +104,10 @@ class RasterGameSprite extends PositionComponent with HasGameReference<MyGame> {
   @override
   FutureOr<void> onLoad() async {
     await super.onLoad();
-    _setSprite();
+    await _setSprite();
   }
 
-  void _setSprite() {
+  Future<void> _setSprite() async {
     _rasterSprite?.removeFromParent();
     final spriteData = game.gameAssets.atlas.sprites[_spriteId];
 
@@ -135,7 +135,7 @@ class RasterGameSprite extends PositionComponent with HasGameReference<MyGame> {
 
     size = srcSize.clone();
 
-    add(
+    await add(
       _rasterSprite = RasterSpriteComponent(
         baseSprite: sprite,
         size: size,

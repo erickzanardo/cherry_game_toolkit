@@ -7,9 +7,9 @@ import 'package:flame_juice_box/effects.dart';
 import 'package:game/controller/controller.dart';
 import 'package:game/game/game.dart';
 
-export 'game_view.dart';
-export 'game_assets.dart';
 export 'components/components.dart';
+export 'game_assets.dart';
+export 'game_view.dart';
 
 class MyGame extends FlameGame with HasKeyboardHandlerComponents {
   MyGame({required this.gameAssets});
@@ -43,10 +43,16 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents {
     controller.removeListener(_onControllerInput);
   }
 
+  Future<void> ballBounce() async {
+    if (ball.firstChild<BounceEffect>() == null) {
+      ball.add(BounceEffect(Vector2(0, -2)));
+    }
+  }
+
   void _onControllerInput(GameControl control, ControllerEventType type) {
     if (control == GameControl.buttonB && type == ControllerEventType.up) {
       if (ball.firstChild<BounceEffect>() == null) {
-        ball.add(BounceEffect(Vector2(0, -2)));
+        unawaited(ballBounce());
       }
     }
   }
