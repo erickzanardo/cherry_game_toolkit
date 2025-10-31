@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game/game/game.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,9 +12,14 @@ void main() async {
   final gameAssets = await GameAssets.load();
 
   runApp(
-    MaterialApp(
-      theme: theme,
-      home: GameView(gameAssets: gameAssets),
+    MultiProvider(
+      providers: [
+        Provider.value(value: gameAssets),
+      ],
+      child: MaterialApp(
+        theme: theme,
+        home: const GameView(),
+      ),
     ),
   );
 }

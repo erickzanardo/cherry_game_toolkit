@@ -9,7 +9,7 @@ import 'package:game/game/game.dart';
 
 export 'components/components.dart';
 export 'game_assets.dart';
-export 'game_view.dart';
+export 'view/game_view.dart';
 
 class MyGame extends FlameGame with HasKeyboardHandlerComponents {
   MyGame({required this.gameAssets});
