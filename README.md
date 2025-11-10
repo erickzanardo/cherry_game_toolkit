@@ -37,5 +37,16 @@ dependencies:
     git:
       url: https://github.com/erickzanardo/cherry_game_toolkit.git
       path: packages/level_progress
-      ref: main # optional, but recommended to avoid breaking changes
+      # ref: git_sha_or_branch_name # optional, but recommended to avoid breaking changes
+```
+
+ - [Game Audio](packages/game_audio): Reusable controllers and services to play musics and sound effects in games.
+
+```yaml
+dependencies:
+  game_audio:
+    git:
+      url: https://github.com/erickzanardo/cherry_game_toolkit.git
+      path: packages/game_audio
+      # ref: git_sha_or_branch_name # optional, but recommended to avoid breaking changes
 ```
