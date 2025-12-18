@@ -8,6 +8,8 @@ class AudioController {
 
   SoLoud? _soloud;
 
+  Map<String, AudioSource> _loadedSources = {};
+
   SoundHandle? _musicHandle;
   StreamSubscription<StreamSoundEvent>? _musicSubscription;
 
@@ -18,6 +20,19 @@ class AudioController {
 
   void dispose() {
     _soloud?.deinit();
+  }
+
+  Future<AudioSource> _getOrLoadSource(
+    String assetKey, {
+    LoadMode mode = LoadMode.memory,
+  }) async {
+    if (_loadedSources.containsKey(assetKey)) {
+      return _loadedSources[assetKey]!;
+    } else {
+      final source = await _soloud!.loadAsset(assetKey, mode: mode);
+      _loadedSources[assetKey] = source;
+      return source;
+    }
   }
 
   Future<void> playSound(String assetKey, {double volume = 1}) async {
@@ -56,7 +71,7 @@ class AudioController {
         await _musicSubscription?.cancel();
       }
     }
-    final musicSource = await _soloud!.loadAsset(source, mode: LoadMode.disk);
+    final musicSource = await _getOrLoadSource(source, mode: LoadMode.disk);
 
     _musicHandle = await _soloud!.play(musicSource, volume: volume);
 
@@ -65,6 +80,11 @@ class AudioController {
           event.event == SoundEventType.handleIsNoMoreValid) {
         await _musicSubscription?.cancel();
         _log.info('Music playback completed.');
+
+        if (event.event == SoundEventType.soundDisposed) {
+          _loadedSources.remove(source);
+        }
+
         completer.complete();
       }
     });

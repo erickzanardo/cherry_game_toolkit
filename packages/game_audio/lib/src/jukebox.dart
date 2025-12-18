@@ -13,6 +13,7 @@ class Jukebox extends WidgetsBindingObserver {
 
   var _index = 0;
   bool _startedPlaying = false;
+  bool _stopped = false;
   double _volume = 1;
   bool isMusicEnabled = true;
   String? _looping;
@@ -45,9 +46,10 @@ class Jukebox extends WidgetsBindingObserver {
       return;
     }
     _looping = null;
+    _stopped = false;
 
     _audioController.startMusic(musics[_index]).then((_) {
-      if (_looping == null) {
+      if (_looping == null && !_stopped) {
         _playNextMusic();
       }
     });
@@ -68,10 +70,12 @@ class Jukebox extends WidgetsBindingObserver {
   }
 
   void stop() {
+    _stopped = true;
     _audioController.stopMusic();
   }
 
   void _playNextMusic() {
+    if (_stopped) return;
     _looping = null;
     _index = (_index + 1) % musics.length;
     _audioController.startMusic(musics[_index]).then((_) {
