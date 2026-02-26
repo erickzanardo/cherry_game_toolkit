@@ -8,9 +8,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 part 'iap_state.dart';
 
 class IapCubit extends HydratedCubit<IapState> {
-  IapCubit({required IAPService iapService, String? noAdsProductId})
+  IapCubit({required IAPService iapService})
     : _iapService = iapService,
-      _noAdsProductId = noAdsProductId,
       super(const IapState(purchases: [])) {
     _purchaseSubscription = _iapService.purchaseStream.listen(
       _listenToPurchaseUpdated,
@@ -18,7 +17,6 @@ class IapCubit extends HydratedCubit<IapState> {
   }
 
   final IAPService _iapService;
-  final String? _noAdsProductId;
 
   late final StreamSubscription<List<PurchaseDetails>> _purchaseSubscription;
 
@@ -144,11 +142,6 @@ class IapCubit extends HydratedCubit<IapState> {
   Future<void> restorePurchases() {
     emit(state.copyWith(restoreInProgress: true));
     return _iapService.restorePurchases();
-  }
-
-  bool userHasNoAds() {
-    if (_noAdsProductId == null) return false;
-    return state.purchases.contains(_noAdsProductId);
   }
 
   void updateLastDialogShownAt(DateTime dateTime) {
